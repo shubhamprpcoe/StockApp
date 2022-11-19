@@ -1,9 +1,10 @@
 const { json } = require("express");
 const express = require("express");
+const axios = require("axios").default;
+
 const router = express.Router();
 // const yahooFinance = require('yahoo-finance2');
 const yahooFinance = require("yahoo-finance2").default;
-const axios = require("axios").default;
 
 const objData = require("../objdata");
 
@@ -14,52 +15,50 @@ let globalUserStockCode = "";
 let userStockCode;
 
 router.all("/leftBar", async (req, res) => {
-    if (req.body.propCmpcode) {
-      userStockCode = req.body.propCmpcode;
-      globalUserStockCode = req.body.propCmpcode;
-    } else {
-      userStockCode = "INFY";
-    }
-    let leftBarJsonData = [];
-    let leftBarJsonObj = {};
+  if (req.body.propCmpcode) {
+    userStockCode = req.body.propCmpcode;
+    globalUserStockCode = req.body.propCmpcode;
+  } else {
+    userStockCode = "INFY";
+  }
+  const leftBarJsonData = [];
+  const leftBarJsonObj = {};
 
-    // ======METHOD 2 YAHOOFINANCE2 =====================
-    const results = await yahooFinance.quoteSummary(`${userStockCode}.NS`, {
-      // 1. Try adding, removing or changing modules
-      // You'll get suggestions after typing first quote mark (")
-      modules: [
-        "price",
-        "financialData",
-        "earningsHistory",
-        "balanceSheetHistory",
-      ],
+  // ======METHOD 2 YAHOOFINANCE2 =====================
+  const results = await yahooFinance.quoteSummary(`${userStockCode}.NS`, {
+    // 1. Try adding, removing or changing modules
+    // You'll get suggestions after typing first quote mark (")
+    modules: [
+      "price",
+      "financialData",
+      "earningsHistory",
+      "balanceSheetHistory",
+    ],
+  });
+
+  //    -------------EPS Calculation for left list------------
+  let eps = 0;
+  if (results.earningsHistory) {
+    console.log(results);
+    results.earningsHistory.history.map((curVal) => {
+      eps += curVal.epsActual;
     });
+    leftBarJsonData.push({ EPS: eps });
+  } else {
+    leftBarJsonData.push({ eps: "nodata" });
+  }
+  //    -------------IntrencisVal Calculation for lrft list------------
+  if (results.earningsHistory && eps) {
+    const IntrencisVal = eps * (7 + results.earningsHistory.history[3].epsEstimate) * (5.4 / 6.06);
+    leftBarJsonData.push({ IntrencisVal });
+    // console.log( results)
+  } else {
+    leftBarJsonData.push({ IntrencisVal: "nodata" });
+  }
+  userStockCode = "";
+  // leftBarJsonObj["leftBarArrData"] = [leftBarJsonData];
 
-
-    //    -------------EPS Calculation for left list------------
-    let eps = 0;
-    if (results.earningsHistory) {
-      console.log(results)
-      results.earningsHistory.history.map((curVal) => {
-        eps = eps + curVal.epsActual;
-      });
-      leftBarJsonData.push({ EPS: eps });
-    } else {
-      leftBarJsonData.push({ eps: "nodata" });
-    }
-    //    -------------IntrencisVal Calculation for lrft list------------
-    if (results.earningsHistory && eps) {
-      let IntrencisVal =
-        eps * (7 + results.earningsHistory.history[3].epsEstimate) * (5.4 / 6.06);
-      leftBarJsonData.push({ IntrencisVal: IntrencisVal });
-      // console.log( results)
-    } else {
-      leftBarJsonData.push({ IntrencisVal: "nodata" });
-    }
-    userStockCode = "";
-    // leftBarJsonObj["leftBarArrData"] = [leftBarJsonData];
-
-    res.send(JSON.stringify(leftBarJsonData));
+  res.send(JSON.stringify(leftBarJsonData));
 });
 
 // --------------------POST---------------
@@ -67,11 +66,11 @@ router.post("/stockName", async (req, res) => {
   try {
     userStock = req.body.stockName;
     let fetchStockList = {};
-    let arr = [];
+    const arr = [];
 
-    for (let item in objData.objdata) {
-      let i = item.toLowerCase();
-      let searchstring = i.startsWith(userStock);
+    for (const item in objData.objdata) {
+      const i = item.toLowerCase();
+      const searchstring = i.startsWith(userStock);
 
       if (i.includes(userStock) && userStock != "" && searchstring) {
         fetchStockList.companyName = item;
@@ -91,26 +90,26 @@ router.post("/stockName", async (req, res) => {
 // -------------Stock Price Graph Api------------
 
 router.all("/stockPriceGraph", async (req, res) => {
-    // userStock = req.body.stockName;
-    // console.log(req.body)
-    try {
-      let xyAxisSata = [];
-      let query = `${req.body.compnyCode}.NS`;
-      // searchCmpName =  `${req.body.compnyCode}.NS`;
+  // userStock = req.body.stockName;
+  // console.log(req.body)
+  try {
+    const xyAxisSata = [];
+    const query = `${req.body.compnyCode}.NS`;
+    // searchCmpName =  `${req.body.compnyCode}.NS`;
 
-      const queryOptions = { period1: "2021-09-20" /* ... */ };
-      const result = await yahooFinance._chart(query, queryOptions);
-      // console.log(result);
-      result.quotes.map((val) => {
-        let myDate = new Date(`${val.date}`);
-        let miliSecDate = myDate.getTime();
-        xyAxisSata.push([miliSecDate, val.high]);
-      });
+    const queryOptions = { period1: "2021-09-20" /* ... */ };
+    const result = await yahooFinance._chart(query, queryOptions);
+    // console.log(result);
+    result.quotes.map((val) => {
+      const myDate = new Date(`${val.date}`);
+      const miliSecDate = myDate.getTime();
+      xyAxisSata.push([miliSecDate, val.high]);
+    });
 
-      res.send(xyAxisSata);
-    } catch (error) {
-      // console.log("no dtata found");
-    }
+    res.send(xyAxisSata);
+  } catch (error) {
+    // console.log("no dtata found");
+  }
 });
 
 router.all("/yahooFinanceQuoteSummary", async (req, res) => {
@@ -127,10 +126,10 @@ router.all("/yahooFinanceQuoteSummary", async (req, res) => {
       ],
     });
     // delete results[earningsHistory]
-    userStock = ''
+    userStock = "";
     res.send(results);
   } catch (error) {
-    console.log("no data found at api yahooFinanceQuoteSummary" ,error);
+    console.log("no data found at api yahooFinanceQuoteSummary", error);
   }
 });
 

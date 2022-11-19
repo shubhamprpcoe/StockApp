@@ -1,76 +1,73 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 
 export default function StockPriceGraph() {
   const ctxState = useSelector((state) => state);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const[xyAxisData , setXyAxisData]=useState([0,0])
+  const [xyAxisData, setXyAxisData] = useState([0, 0]);
 
-
-const options = {
+  const options = {
 
     chart: {
-        zoomType: 'x'
+      zoomType: "x",
     },
     title: {
-        text: 'Stock Price Graph'
+      text: "Stock Price Graph",
     },
     subtitle: {
-        text: document.ontouchstart === undefined ?
-            '' : ''
+      text: document.ontouchstart === undefined
+        ? "" : "",
     },
     xAxis: {
-        type: 'datetime'
+      type: "datetime",
     },
     yAxis: {
-        title: {
-            text: 'Price rate'
-        }
+      title: {
+        text: "Price rate",
+      },
     },
     legend: {
-        enabled: false
+      enabled: false,
     },
     plotOptions: {
-        area: {
-            fillColor: {
-                linearGradient: {
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 1
-                },
-                stops: [
-                    [0, Highcharts.getOptions().colors[0]],
-                    [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                ]
-            },
-            marker: {
-                radius: 2
-            },
+      area: {
+        fillColor: {
+          linearGradient: {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 1,
+          },
+          stops: [
+            [0, Highcharts.getOptions().colors[0]],
+            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get("rgba")],
+          ],
+        },
+        marker: {
+          radius: 2,
+        },
+        lineWidth: 1,
+        states: {
+          hover: {
             lineWidth: 1,
-            states: {
-                hover: {
-                    lineWidth: 1
-                }
-            },
-            threshold: null
-        }
+          },
+        },
+        threshold: null,
+      },
     },
 
     series: [{
-        type: 'area',
-        name: 'Stock Price',
-        data:  ctxState.ctx.stockGraphData ? ctxState.ctx.stockGraphData : xyAxisData
+      type: "area",
+      name: "Stock Price",
+      data: ctxState.ctx.stockGraphData ? ctxState.ctx.stockGraphData : xyAxisData,
 
-    }]
-}
+    }],
+  };
   return (
-    < >
-      <HighchartsReact highcharts={Highcharts} options={options}  ></HighchartsReact>
-    </>
-  )
+    <HighchartsReact highcharts={Highcharts} options={options} />
+  );
 }

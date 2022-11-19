@@ -1,8 +1,7 @@
-import React from 'react';
-import Tabmiddle from './Tabmiddle';
-import {  Container } from '@mui/material'
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-
+import React from "react";
+import { Container } from "@mui/material";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import Tabmiddle from "./Tabmiddle";
 
 export default function MiddleBar() {
   // fetch('http://localhost:5000/stockData  ')
@@ -15,13 +14,11 @@ export default function MiddleBar() {
   //     console.log(error)
   //   });
 
-  
   return (
     <div>
-        <Container >
-            <Tabmiddle> </Tabmiddle>
-        </Container >
+      <Container>
+        <Tabmiddle> </Tabmiddle>
+      </Container>
     </div>
-  )
+  );
 }
-

@@ -1,12 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {}
+const initialState = {};
 
 export const ctxSlice = createSlice({
-  name: 'ctx',
+  name: "ctx",
   initialState,
   reducers: {
-    registerCtx: ( state, action) => {
+    registerCtx: (state, action) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -14,22 +14,22 @@ export const ctxSlice = createSlice({
       // let Skey = action.payload.stockKey ;
       // let Svalue =  action.payload.stockValue
       // let obj = { Skey : Svalue}
-      let obj ={...state}
-      obj[action.payload.stockKey] =  action.payload.stockValue
+      const obj = { ...state };
+      obj[action.payload.stockKey] = action.payload.stockValue;
       // let obj = { stockAnalysisData : action.payload.stockAnalysisData}
-      return {...obj}
+      return { ...obj };
       // state.action.payload.key = action.payload.val
     },
-    updateCtx: ( state, action) => {
-      state.value -= 1
+    updateCtx: (state, action) => {
+      state.value -= 1;
     },
     delectCtx: (state, action) => {
-      state.action.payload.key = action.payload.val
+      state.action.payload.key = action.payload.val;
     },
   },
-})
+});
 
 // Action creators are generated for each case reducer function
-export const { registerCtx, updateCtx, delectCtx } = ctxSlice.actions
+export const { registerCtx, updateCtx, delectCtx } = ctxSlice.actions;
 
-export default ctxSlice.reducer
+export default ctxSlice.reducer;
