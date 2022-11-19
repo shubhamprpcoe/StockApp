@@ -5,15 +5,15 @@ import "./App.css";
 import { Provider } from "react-redux";
 import { store } from "./redux/store/store";
 
-import Home from "./pages/home/Home";
-// import Login from "./feature/loginSignin/LoginMainBody";
+// import Home from "./pages/home/Home";
+import Login from "./feature/loginSignin/LoginMainBody";
 
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <Home />
-        {/* <Login />  */}
+        {/* <Home /> */}
+        <Login />
       </div>
     </Provider>
   );
