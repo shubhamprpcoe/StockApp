@@ -19,11 +19,7 @@ const isUserAuthenticate = async (req, res, next) => {
       req.user = [verifiedUserId, userFilds];
       next();
     } catch (error) {
-<<<<<<< HEAD
-      return res.status(406).send({ status: "failded", message: "filds are missing " });
-=======
       return res.status(406).send({ status: "failded", message: "filds are missing 3" });
->>>>>>> bdb9040 (changes)
     }
   }
 };
