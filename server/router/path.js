@@ -1,6 +1,9 @@
 const { json } = require("express");
 const express = require("express");
 const axios = require("axios").default;
+const { userRegistration, userLogIn } = require("../controllers/signup/userRegistration");
+const isUserAuthenticate = require("../middleWare/authentication/authenticationMiddleware");
+const { resetUserPassword } = require("../controllers/signup/userRegistration");
 
 const router = express.Router();
 // const yahooFinance = require('yahoo-finance2');
@@ -132,5 +135,9 @@ router.all("/yahooFinanceQuoteSummary", async (req, res) => {
     console.log("no data found at api yahooFinanceQuoteSummary", error);
   }
 });
+
+router.all("/signUp", userRegistration);
+router.all("/logIn", userLogIn);
+router.all("/resetpass", isUserAuthenticate, resetUserPassword);
 
 module.exports = router;
