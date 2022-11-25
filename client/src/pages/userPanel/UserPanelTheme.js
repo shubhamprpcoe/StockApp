@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { ThemeProvider } from "@mui/material";
+// import { ThemeProvider } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   mainBox: {
@@ -18,8 +18,13 @@ const useStyles = makeStyles((theme) => ({
   mainGridItem: {
     backgroundColor: "#121212",
     height: "100%",
+    overflow: "auto",
+    borderRight: "1px solid #424242 ",
+    borderRadius: "2px",
     [theme.breakpoints.down("xs")]: {
       height: "fit-content",
+      border: "1px solid #424242 ",
+
     },
   },
 
