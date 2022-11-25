@@ -1,4 +1,4 @@
-const { verify } = require("jsonwebtoken");
+// const { verify } = require("jsonwebtoken");
 const { verifyJwtToken } = require("../../utils/genrateJwtToken");
 const UserSignUpModel = require("../../models/users");
 

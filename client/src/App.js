@@ -6,14 +6,16 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store/store";
 
 // import Home from "./pages/home/Home";
-import Login from "./feature/loginSignin/LoginMainBody";
+// import Login from "./feature/loginSignin/LoginMainBody";
+import UserPanel from "./pages/userPanel/UserPanel";
 
 function App() {
   return (
     <Provider store={store}>
       <div className="App">
         {/* <Home /> */}
-        <Login />
+        {/* <Login /> */}
+        <UserPanel />
       </div>
     </Provider>
   );
