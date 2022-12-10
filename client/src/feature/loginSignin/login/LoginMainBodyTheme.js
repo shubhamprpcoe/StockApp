@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import Image from "../../assets/login/rm222batch5-mind-02.jpg";
+import Image from "../../../assets/login/rm222batch5-mind-02.jpg";
 
 const useStyles = makeStyles((theme) => ({
 

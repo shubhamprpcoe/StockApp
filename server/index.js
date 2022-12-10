@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 const yahooFinance = require("yahoo-finance");
-
+const cookieParser = require("cookie-parser");
 const { connect } = require("mongoose");
 const connectToDataBase = require("./config/connectdb");
 const routers = require("./router/path");
@@ -12,7 +12,12 @@ require("dotenv").config();
 const app = express();
 
 // CORS policy
-app.use(cors());
+app.use(cors(
+  { credentials: true, origin: "http://localhost:3000" },
+));
+
+// cookieParser
+app.use(cookieParser());
 
 const { DATABASE_URL, PORT } = process.env;
 const port = PORT || 5000;

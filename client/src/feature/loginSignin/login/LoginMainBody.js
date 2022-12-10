@@ -5,11 +5,11 @@ import {
   Container, Paper, Box,
 } from "@mui/material";
 // import LogIn from "./login/LogIn";
-import SignUp from "./signup/SignUp";
+import LogIn from "./LogIn";
 
-import useStyles from "./loginMainBodyTheam";
+import useStyles from "./LoginMainBodyTheme";
 
-export default function Login() {
+export default function LoginMainBody() {
   const classes = useStyles();
   return (
     <div className={classes.pc_login_inBox}>
@@ -21,7 +21,7 @@ export default function Login() {
             style={{ background: "transparent" }}
           >
             <div className={classes.pc_login_inBox}>
-              <SignUp />
+              <LogIn />
             </div>
 
           </Box>
