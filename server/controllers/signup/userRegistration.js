@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const { genrateJwtToken } = require("../../utils/genrateJwtToken");
 const UserSignUpModel = require("../../models/users");
 
@@ -36,7 +37,16 @@ const userRegistration = async (req, res) => {
 
       // implementing JWT
 
-      const token = genrateJwtToken(savedUserAllFieldData);
+      const token = await genrateJwtToken(savedUserAllFieldData);
+
+      // SetCoolies will expire in d days time in milisecound
+      console.log("cookie token", token);
+      const cookiesOption = {
+        expires: new Date(Number(new Date()) + 518400000),
+        httpOnly: true,
+
+      };
+      res.cookie("userName", token, cookiesOption);
 
       return res.status(200).send({ status: "success", message: " registration successfull", token });
     } catch (error) {
