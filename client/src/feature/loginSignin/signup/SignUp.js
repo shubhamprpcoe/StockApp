@@ -45,7 +45,7 @@ export default function signUp() {
       SetCallApi(false);
     } else { SetValidateCofirmationPassword("Cofirmation password"); }
 
-    if (validateData.name.length !== 0 && validateData.email.includes("@") && validateData.password.length > 4) {
+    if (validateData.name.length !== 0 && validateData.email.includes("@") && validateData.password.length > 3) {
       SetCallApi(true);
     }
   };
@@ -55,21 +55,21 @@ export default function signUp() {
     // sending body data to api for login
 
     if (callApi) {
-      fetch("http://localhost:5000/listData/signUp", {
-        method: "POST",
-        body: JSON.stringify({
-          ...signUpBody,
-        }),
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }).then((response) => response.json())
-        .then((json) => {
+    fetch("http://localhost:5000/listData/signUp", {
+      method: "POST",
+      body: JSON.stringify({
+        ...signUpBody,
+      }),
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }).then((response) => response.json())
+      .then((json) => {
         // setList(json);
-          console.log(json);
-        });
-    }
+        console.log(json);
+      });
+    // }
     /// again validating user inputs before calling api so set false
     SetCallApi(false);
   };
@@ -94,7 +94,7 @@ export default function signUp() {
           <TextField
             hiddenLabel
             label={validateName}
-            defaultValue=" "
+            defaultValue=""
             id="filled-hidden-label-small"
             placeholder="Name"
             variant="outlined"
@@ -107,7 +107,7 @@ export default function signUp() {
           <TextField
             hiddenLabel
             label={validateEmail}
-            defaultValue=" "
+            defaultValue=""
             id="filled-hidden-label-small"
             placeholder="Email"
             variant="outlined"
@@ -121,7 +121,7 @@ export default function signUp() {
           <TextField
             hiddenLabel
             label={validatePassword}
-            defaultValue=" "
+            defaultValue=""
             id="filled-hidden-label-small"
             placeholder="Password"
             variant="outlined"
@@ -135,7 +135,7 @@ export default function signUp() {
           <TextField
             hiddenLabel
             label={validateCofirmationPassword}
-            defaultValue=" "
+            defaultValue=""
             id="filled-hidden-label-small"
             placeholder="Password"
             variant="outlined"
