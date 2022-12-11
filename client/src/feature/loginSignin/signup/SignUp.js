@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, TextField, Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -6,41 +6,73 @@ import useStyles from "./SignUpTheme";
 
 export default function signUp() {
   const classes = useStyles();
-  const [helperText, SethelperText] = useState("");
+
+  const [validateName, SetValidateName] = useState("Name");
+  const [validateEmail, SetValidateEmail] = useState("Email");
+  const [validatePassword, SetValidatePassword] = useState("Password");
+  const [validateCofirmationPassword, SetValidateCofirmationPassword] = useState("Cofirmation password");
+  const [callApi, SetCallApi] = useState("false");
 
   const [signUpBody, SetSignUpBody] = useState({
     name: "", email: "", password: "", cofirmationPassword: "",
   });
-
   // creating and messaging data to sending backx`
-  const creatingBodyData = (name, value) => {
-    SetSignUpBody((prev) => {
-      console.log(prev);
-      return { ...prev, [name]: value };
-    });
+  const creatingBodyData = async (name, value) => {
+    SetSignUpBody({ ...signUpBody, [name]: value });
+  };
+
+  // signUpBody is not updating latest value so need to
+  // rerender this componet twice so we use use effect
+  useEffect(() => {
+  }, [signUpBody]);
+
+  // validating  user inuts
+  const validateUserInputs = (validateData) => {
+    if (validateData.name.length === 0) {
+      SetValidateName("Name is empty");
+      SetCallApi(false);
+    } else { SetValidateName("Name"); }
+    if (!validateData.email.includes("@")) {
+      SetValidateEmail("Wrong email");
+      SetCallApi(false);
+    } else { SetValidateEmail("Email"); }
+    if (validateData.password.length < 4) {
+      SetValidatePassword("Short password");
+      SetCallApi(false);
+    }SetValidatePassword("Password");
+    if (validateData.password !== validateData.cofirmationPassword) {
+      SetValidateCofirmationPassword("Not equal to password");
+      SetCallApi(false);
+    } else { SetValidateCofirmationPassword("Cofirmation password"); }
+
+    if (validateData.name.length !== 0 && validateData.email.includes("@") && validateData.password.length > 4) {
+      SetCallApi(true);
+    }
   };
 
   const signUpWithUserData = async () => {
-    fetch("http://localhost:5000/listData/signUp", {
-      method: "POST",
-      body: JSON.stringify({
-        name: "rusFdCwdd",
-        email: "asafdssd@ham",
-        password: "xvdd",
-        cofirmationPassword: "xvdd",
-      }),
-      credentials: "include",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }).then((response) => response.json())
-      .then((json) => {
-        // setList(json);
-        console.log(json);
-      });
-  };
+    validateUserInputs(signUpBody);
+    // sending body data to api for login
 
-  // name, email, password, cofirmationPassword
+    if (callApi) {
+      fetch("http://localhost:5000/listData/signUp", {
+        method: "POST",
+        body: JSON.stringify({
+          ...signUpBody,
+        }),
+        credentials: "include",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }).then((response) => response.json())
+        .then((json) => {
+        // setList(json);
+          console.log(json);
+        });
+    }
+    /// again validating user inputs before calling api so set false
+    SetCallApi(false);
+  };
 
   return (
     <div className={classes.pc_login_main}>
@@ -53,7 +85,7 @@ export default function signUp() {
         Sign Up
       </Typography>
 
-      <Typography variant="caption" component="h9" sx={{ color: "#616161" }}>
+      <Typography variant="caption" component="h4" sx={{ color: "#616161" }}>
         Making you financially well and get notification for stock
       </Typography>
 
@@ -61,21 +93,22 @@ export default function signUp() {
         <div className={classes.pc_signup_stack}>
           <TextField
             hiddenLabel
+            label={validateName}
+            defaultValue=" "
             id="filled-hidden-label-small"
-            defaultValue=""
             placeholder="Name"
             variant="outlined"
             size="small"
             margin="normal"
             name="name"
-            helperText={helperText}
             onChange={(e) => { creatingBodyData(e.target.name, e.target.value); }}
           />
           <br />
           <TextField
             hiddenLabel
+            label={validateEmail}
+            defaultValue=" "
             id="filled-hidden-label-small"
-            defaultValue=""
             placeholder="Email"
             variant="outlined"
             size="small"
@@ -87,8 +120,9 @@ export default function signUp() {
           <br />
           <TextField
             hiddenLabel
+            label={validatePassword}
+            defaultValue=" "
             id="filled-hidden-label-small"
-            defaultValue=""
             placeholder="Password"
             variant="outlined"
             size="small"
@@ -100,15 +134,15 @@ export default function signUp() {
           <br />
           <TextField
             hiddenLabel
+            label={validateCofirmationPassword}
+            defaultValue=" "
             id="filled-hidden-label-small"
-            defaultValue=""
             placeholder="Password"
             variant="outlined"
             size="small"
             margin="normal"
             name="cofirmationPassword"
             onChange={(e) => { creatingBodyData(e.target.name, e.target.value); }}
-            x
           />
           <br />
           <div className={classes.pc_signup_button}>
