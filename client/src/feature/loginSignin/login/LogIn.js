@@ -43,21 +43,21 @@ export default function signUp() {
     validateUserLoginInputs(loginBody);
     // sending body data to api for login
 
-    // if (callLoginApi || true) {
-    fetch("http://localhost:5000/listData/logIn", {
-      method: "POST",
-      body: JSON.stringify({
-        ...loginBody,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }).then((response) => response.json())
-      .then((json) => {
+    if (callLoginApi || true) {
+      fetch("http://localhost:5000/listData/logIn", {
+        method: "POST",
+        body: JSON.stringify({
+          ...loginBody,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }).then((response) => response.json())
+        .then((json) => {
         // setList(json);
-        console.log(json);
-      });
-    // }
+          console.log(json);
+        });
+    }
     /// again validating user inputs before calling api so set false
     SetCallLoginApi(false);
   };
