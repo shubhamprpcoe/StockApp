@@ -65,17 +65,18 @@ const userLogIn = async (req, res) => {
       const isEmailAlredyExist = await UserSignUpModel.findOne({ Email: email });
       if (isEmailAlredyExist != null) {
         const isuserPasswordMatche = await bcrypt.compare(password, isEmailAlredyExist.Password);
+
         if (isuserPasswordMatche && email === isEmailAlredyExist.Email) {
           return res.status(200).send({ status: "success", message: " user loged in " });
         }
 
-        return res.status(401).send({ status: "failed", message: " not a register user " });
+        return res.status(401).send({ status: "failed", message: " not a register user 72" });
       }
-      return res.status(403).send({ status: "failed", message: " not a register user " });
+      return res.status(403).send({ status: "failed", message: " not a register user 74" });
     }
-    return res.status(401).send({ status: "failed", message: " not a register user " });
+    return res.status(401).send({ status: "failed", message: " not a register user 76" });
   } catch (error) {
-    return res.status(401).send({ status: "failed", message: " not a register user " });
+    return res.status(401).send({ status: "failed", message: " not a register user 78" });
   }
 };
 

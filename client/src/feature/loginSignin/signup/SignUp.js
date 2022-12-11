@@ -17,7 +17,7 @@ export default function signUp() {
     name: "", email: "", password: "", cofirmationPassword: "",
   });
   // creating and messaging data to sending backx`
-  const creatingBodyData = async (name, value) => {
+  const creatingBodyData = (name, value) => {
     SetSignUpBody({ ...signUpBody, [name]: value });
   };
 
@@ -39,7 +39,7 @@ export default function signUp() {
     if (validateData.password.length < 4) {
       SetValidatePassword("Short password");
       SetCallApi(false);
-    }SetValidatePassword("Password");
+    } else { SetValidatePassword("Password"); }
     if (validateData.password !== validateData.cofirmationPassword) {
       SetValidateCofirmationPassword("Not equal to password");
       SetCallApi(false);
